@@ -1,25 +1,40 @@
-
 import styles from "./todoitem.module.css";
 
+export default function TodoItem({ item, todos, setTodos }) {
+  function handleDelete(item) {
+    setTodos(todos.filter((todo) => todo !== item));
+  }
 
+  function handleClick(name) {
+    console.log("button clicked", item);
 
-export default function TodoItem({item, todos, setTodos}){
-    function handleDelete(item){
-       console.log('Dlelete button clicked for item', item); 
-       setTodos( todos.filter((todo) => todo !== item)); 
-      
-    }
-    return (
-      <div className={styles.item}>
-        <div className={styles.itemName}>
+    setTodos(
+      todos.map((todo) =>
+        todo.name === name ? { ...todo, done: !todo.done } : todo
+      )
+    )
+  }
+  const className = item.done ? styles.complelted : "";
+  return (
+    <div className={styles.item}>
+      <div className={styles.itemName}>
+        <span className={className} onClick={() => handleClick(item.name)}>
           {item.name}
-          <span>
-            <button 
-            onClick ={()=>handleDelete(item)} className={styles.deleteButton}>x</button>
-          </span>
-        </div>
+        </span>
 
-        <hr className={styles.line} />
+        <span>
+          <button
+            onClick={() => {
+              handleDelete(item);
+            }}
+            className={styles.deleteButton}
+          >
+            x
+          </button>
+        </span>
       </div>
-    );
+
+      <hr className={styles.line} />
+    </div>
+  );
 }
